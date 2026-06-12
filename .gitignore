@@ -35,3 +35,9 @@ yarn-error.log*
 /node_modules
 /.pnp
 .pnp.js
+
+.DS_Store
+*.pem
+files/
+
+db/
