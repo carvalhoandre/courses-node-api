@@ -38,6 +38,6 @@ yarn-error.log*
 
 .DS_Store
 *.pem
-files/
 
-db/
+/files
+/db
