@@ -8,11 +8,14 @@ import { Password } from './utils/password.ts';
 import { v } from '../../core/utils/validate.ts';
 import { rateLimit } from '../../core/middleware/rate-limit.ts';
 
+import { PEPPER } from '../../env.ts';
+
 export class AuthApi extends Api {
   query = new AuthQuery(this.db);
   session = new SessionService(this.core);
   auth = new AuthMiddleware(this.core);
-  pass = new Password('segredo');
+  pass = new Password(PEPPER);
+
   handlers = {
     postUser: async (req, res) => {
       const { name, username, email, password } = {
