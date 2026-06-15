@@ -1,27 +1,33 @@
 import {
   createServer,
-  type IncomingMessage,
-  type ServerResponse,
   type Server,
+  type ServerResponse,
+  type IncomingMessage,
 } from 'node:http';
+
 import { Router } from './router.ts';
 import { customRequest } from './http/custom-request.ts';
 import { customResponse } from './http/custom-response.ts';
 import { bodyJson } from './middleware/body-json.ts';
 import { RouteError } from './utils/route-error.ts';
 import { Database } from './database.ts';
-import { DB_PATH } from '../env.ts';
+import { DB_PATH, EMAIL_KEY } from '../env.ts';
+import { Mail } from './mail/mail.ts';
 
 export class Core {
   router: Router;
   server: Server;
   db: Database;
+  mail: Mail;
+
   constructor() {
     this.router = new Router();
     this.router.use([bodyJson]);
     this.db = new Database(DB_PATH);
     this.server = createServer(this.handler);
+    this.mail = new Mail(EMAIL_KEY);
   }
+  
   handler = async (request: IncomingMessage, response: ServerResponse) => {
     try {
       const req = await customRequest(request);
